@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#000000"><title>Update Minima</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100svh;padding:32px 24px;display:grid;place-items:center;background:#000;color:#f5f5f7;font:15px/1.65 system-ui}main{width:min(100%,420px)}.mark{display:flex;gap:4px;align-items:center;width:33px;height:36px;margin-bottom:28px}.mark i{width:6px;height:27px;border-radius:4px;transform:rotate(-15deg);background:#d2f779}.mark i:nth-child(2){height:34px}.mark i:nth-child(3){height:21px}h1{font-size:34px;line-height:1.15;letter-spacing:-1.5px;margin:0 0 16px}p{color:#a5a5af}button{width:100%;min-height:52px;border:0;border-radius:26px;background:#e4f9b3;color:#11140a;font:600 15px system-ui;cursor:pointer;margin-top:17px}button:disabled{opacity:.5}button:focus-visible,a:focus-visible{outline:2px solid #d2f779;outline-offset:5px}small{color:#93939d;overflow-wrap:anywhere;font-size:11px}a{display:block;color:#c3c3cc;text-align:center;min-height:44px;padding:14px;text-decoration:none}#status{font-size:13px}
+</style></head><body><main>
+<div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
+<h1>Get the latest Minima.</h1>
+<p>Refresh the app files while keeping your habits, meals and settings saved on this device.</p>
+<button id="repair">Force update now</button><p id="status" role="status" aria-live="polite"></p><small id="detail"></small><a href="/">Back to Minima</a>
+</main><script>
+document.getElementById('repair').onclick=async function(){
+ var button=this,status=document.getElementById('status'),detail=document.getElementById('detail');
+ button.disabled=true;status.textContent='Checking the latest release…';detail.textContent='';
+ var controller=new AbortController();
+ var timer=setTimeout(function(){controller.abort()},12000);
+ try{
+  if(!navigator.onLine)throw new Error('Connect to the internet and try again.');
+  var releaseResponse=await fetch('/app-version.json?check='+Date.now(),{cache:'no-store',signal:controller.signal});
+  if(!releaseResponse.ok)throw new Error('The update server could not be reached. Please try again.');
+  var release=await releaseResponse.json();
+  if(!release.id||typeof release.id!=='string')throw new Error('The release is still becoming available. Try again shortly.');
+  var response=await fetch('/index.html?minima-update='+Date.now(),{cache:'no-store',signal:controller.signal});
+  if(!response.ok)throw new Error('The latest app could not be downloaded.');
+  var html=new DOMParser().parseFromString(await response.text(),'text/html');
+  var version=html.querySelector('meta[name="minima-build"]');
+  if(!version||version.content!==release.id)throw new Error('The release is still becoming available. Try again shortly.');
+  clearTimeout(timer);
+  status.textContent='Opening the latest Minima…';
+  if('serviceWorker' in navigator){
+   var registration=await navigator.serviceWorker.getRegistration(location.href);
+   if(registration)await registration.unregister();
+  }
+  location.replace('/?_minima_release='+encodeURIComponent(release.id)+'&_minima_refresh='+Date.now());
+ }catch(error){
+  status.textContent='The app could not be refreshed yet.';
+  detail.textContent=error.name==='AbortError'?'The update timed out. Try again with a connection.':error.message;
+  button.disabled=false;
+ }finally{clearTimeout(timer)}
+};
+</script></body></html>

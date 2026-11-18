@@ -1,0 +1,125 @@
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/instrument-serif.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --display: 'Instrument Serif', Georgia, serif;
+  --text: #f3eee2;
+}
+:root:not([data-theme]), :root[data-theme='midnight'] {
+  --bg: #0c1714;
+  --sidebar: #0c1714;
+  --surface: #14231e;
+  --surface-raised: #1b2b24;
+  --surface-soft: #101e19;
+  --surface-hover: #23352c;
+  --border: #33453b;
+  --border-soft: #293b32;
+  --muted: #adb9ab;
+}
+.main-area, .topbar, .sidebar { background: var(--bg); }
+.main-area::before { content: none; }
+.app-mark { width: 32px; height: 32px; flex: none; }
+.brand, .mobile-brand { color: var(--text); font: 600 23px/1 Manrope,sans-serif; letter-spacing: -.07em; }
+.topbar { border-color: var(--border-soft); backdrop-filter: none; }
+.top-actions { gap: 5px; }
+.top-actions .icon-button { width: 44px; height: 44px; color: var(--muted); }
+.local-status { color: var(--muted); }
+.page-header { align-items: center; }
+.page-header h1 { color: var(--text); background: none; font: 400 clamp(52px,6vw,80px)/.98 var(--display); letter-spacing: -.035em; }
+.page-header p { font-size: 14px; color: var(--muted); }
+.eyebrow, .landscape-heading h2 { font: 500 10px/1.4 'DM Mono',monospace; text-transform: uppercase; letter-spacing: .14em; }
+.eyebrow { margin-bottom: 7px; color: var(--muted); }
+.date-picker { height: auto; padding: 0; gap: 0; background: var(--surface); border-radius: 99px; border-color: var(--border); }
+.date-picker .icon-button, .date-label { min-height: 44px; }
+.date-picker .icon-button { width: 44px; border-radius: 50%; }
+.date-label { min-width: 0; font-size: 12px; color: var(--text); }
+.date-label svg { display: none; }
+.daybook-grid { display: grid; grid-template-columns: 1.3fr .9fr; gap: 16px; }
+.landscape-card, .weather-card { overflow: hidden; border-radius: 22px; }
+.landscape-card {
+  min-height: 254px; padding: 24px; display: flex; flex-direction: column; color: #fff8e7;
+  border: 1px solid #a8b49355;
+  background: linear-gradient(90deg,#071711a6,transparent 78%),linear-gradient(0deg,#071a14dc,transparent 68%),url('/art/morning-ridge.webp') 56% center / cover, #214034;
+}
+.landscape-heading { display: flex; align-items: center; gap: 8px; }
+.landscape-heading h2 { margin: 0; color: #fff8e7; }
+.landscape-count { margin-top: auto; padding-top: 17px; font: 400 78px/.95 var(--display); letter-spacing: -.055em; font-variant-numeric: lining-nums tabular-nums; }
+.landscape-count span { color: #e0e6d2; font-size: .54em; letter-spacing: -.045em; }
+.landscape-caption { margin-top: 4px; font-size: 13px; color: #eeefdf; }
+.landscape-footer { margin-top: 22px; display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.landscape-log { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border: 0; border-radius: 24px; background: var(--accent); color: #142017; font-size: 14px; font-weight: 650; cursor: pointer; }
+.landscape-meter { width: 32%; max-width: 140px; padding-bottom: 4px; }
+.landscape-meter b { display: block; margin-bottom: 8px; text-align: right; font: 500 12px 'DM Mono',monospace; }
+.landscape-meter > div { height: 4px; overflow: hidden; background: #ffffff42; border-radius: 3px; }
+.landscape-meter span { display: block; height: 100%; background: var(--accent); transition: width .22s; }
+.weather-card { padding: 22px; display: flex; flex-direction: column; justify-content: center; background: var(--surface); border: 1px solid var(--border-soft); }
+.weather-heading { display: flex; align-items: center; justify-content: space-between; color: var(--accent); }
+.weather-heading h2, .section-heading h2, .modal-head h2, .calendar-head h2, .chart-head h2, .settings-heading h2 {
+  margin: 0; color: var(--text); font: 400 32px/1.12 var(--display); letter-spacing: -.02em;
+}
+.weather-options { margin-top: 16px; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 7px; }
+.weather-choice { min-height: 66px; display: grid; align-content: center; justify-items: center; gap: 6px; border: 1px solid var(--border-soft); border-radius: 13px; background: var(--surface-soft); color: var(--weather); cursor: pointer; }
+.weather-low { --weather: #abc6d8; } .weather-uneven { --weather: #cbb7df; } .weather-steady { --weather: #b6cdb4; } .weather-good { --weather: #f1c57e; }
+.weather-choice span { font-size: 12px; color: #d6dfd2; }
+.weather-choice[aria-checked=true] { background: color-mix(in srgb,var(--weather) 14%,var(--surface)); border-color: var(--weather); }
+.record-summary { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+.surface-card, .calendar-card, .selected-day-card, .chart-card, .settings-section, .install-card, .quick-modal, .intention-card, .consistency-card {
+  border-radius: 18px; border-color: var(--border-soft); background: var(--surface); box-shadow: none; backdrop-filter: none;
+}
+.intention-card { margin: 14px 0; }
+.intention-card summary { min-height: 66px; }
+.intention-copy small { text-transform: uppercase; }
+.tracker-row { min-height: 52px; }
+.tracker-row .tracker-name { font-size: 14px; }
+.tracker-row button.check-button { position: relative; }
+.tracker-row button.check-button::after { content: ''; position: absolute; inset: 50% auto auto 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; }
+.card-heading h3, .settings-section h3 { font-size: 16px; }
+.calorie-hero, .score-card { background: linear-gradient(130deg,color-mix(in srgb,var(--accent) 14%,var(--surface)),var(--surface) 80%); border: 1px solid var(--border); border-radius: 22px; }
+.calorie-page .calorie-big-num, .score-number { font: 400 clamp(48px,8vw,76px)/1 var(--display); color: var(--text); letter-spacing: -.035em; }
+.calorie-sub-stat { background: var(--surface-soft); }
+.calorie-sub-stat small { color: var(--muted); }
+.quick-add, .primary-button, .calorie-estimate-btn { background: var(--accent); color: #142017; box-shadow: none; }
+.quick-modal { max-height: min(82dvh,660px); overflow-y: auto; overscroll-behavior: contain; }
+.quick-options button { min-height: 48px; }
+@media (max-width:680px) {
+  .main-area { overflow: clip; }
+  .topbar { height: calc(54px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) max(18px,env(safe-area-inset-right)) 0 max(18px,env(safe-area-inset-left)); }
+  .mobile-brand { display: flex; gap: 8px; }
+  .mobile-brand .app-mark { width: 29px; height: 29px; }
+  .top-actions .local-status { display: flex; color: var(--muted); font-size: 10px; }
+  .top-actions { gap: 2px; }
+  .top-actions .icon-button { display: grid; }
+  .content-area { padding: 22px max(16px,env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left)); }
+  .page-header { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 18px; }
+  .header-right { width: auto; }
+  .page-header h1 { font-size: clamp(48px,12vw,62px); }
+  .date-picker { width: auto; }
+  .daybook-grid { grid-template-columns: minmax(0,1fr); gap: 12px; }
+  .landscape-card { min-height: 222px; padding: 20px; background-position: 65% center; }
+  .landscape-count { font-size: 70px; }
+  .weather-card { padding: 16px; }
+  .weather-heading h2 { font-size: 28px; }
+  .weather-options { margin-top: 12px; }
+  .weather-choice { min-height: 60px; }
+  .section-heading { margin-top: 25px; }
+  .mobile-nav { bottom: 0; left: 0; right: 0; height: calc(65px + env(safe-area-inset-bottom)); padding: 5px max(12px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); gap: 4px; border: 0; border-top: 1px solid var(--border); border-radius: 0; background: var(--bg); backdrop-filter: none; box-shadow: none; }
+  .mobile-nav-link { min-height: 48px; gap: 4px; font-size: 11px; color: var(--muted); border-radius: 14px; }
+  .mobile-nav-link.active { background: var(--surface-raised); color: var(--accent); box-shadow: none; }
+  .mobile-nav-link.active svg { filter: none; }
+  .quick-add { bottom: calc(78px + env(safe-area-inset-bottom)); }
+  .quick-modal { border-radius: 22px 22px 0 0; padding-bottom: max(18px,env(safe-area-inset-bottom)); }
+  .modal-backdrop { align-items: end; }
+  .calorie-page .nutrition-log-head p, .calorie-page .food-description > label, .food-log-empty p { font-size: 13px; }
+  .nutrition-log-head .meal-status-toggle, .meal-pill-btn, .ai-photo-button, .manual-toggle-btn, .manual-form-grid input, .segmented-control button { min-height: 44px; }
+  .calorie-page .food-description textarea, .manual-form-grid input, .note-card textarea { font-size: 16px; }
+  .calendar-day { min-height: 42px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .landscape-meter span { transition: none; }
+}
+

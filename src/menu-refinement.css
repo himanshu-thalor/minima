@@ -1,0 +1,8 @@
+.tracker-popover[data-side='above'] {
+  top:auto;
+  bottom:calc(100% - 8px);
+}
+.tracker-options {
+  min-width:44px;
+  min-height:44px;
+}

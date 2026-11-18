@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Minima" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="preload" href="/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/icons/minima-v2.svg" />
+    <link rel="apple-touch-icon" href="/icons/minima-v2-180.png" />
+    <meta name="description" content="Minima — a calmer way to grow, one day at a time." />
+    <title>Minima — Your space to grow</title>
+    <style>
+      html,body{background:#000;color:#f5f5f7;margin:0}
+      .startup-shell{box-sizing:border-box;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;font:15px/1.5 system-ui,sans-serif;text-align:center;background:#000;color:#b5b5bd}
+      .startup-shell[hidden]{display:none}
+      .startup-wordmark{font-size:32px;font-weight:650;letter-spacing:-.07em;color:#f5f5f7}
+      .startup-shell h1{margin:0;font-size:24px;letter-spacing:-.035em;color:#f5f5f7}
+      .startup-shell p{max-width:340px;margin:0}
+      .startup-shell a{min-height:44px;display:flex;align-items:center;padding:0 18px;border-radius:22px;background:#1c1c1e;color:#e9ff95;text-decoration:none}
+      #startup-recovery{position:fixed;inset:0;z-index:1000}
+
+      @font-face{font-family:'Instrument Serif';src:url('/fonts/instrument-serif.woff2') format('woff2');font-weight:400;font-display:swap}
+      #startup-shell,.loading-screen{gap:0;min-height:100svh;padding-bottom:72px}
+      .startup-logo{height:64px;width:64px;display:flex;justify-content:center;align-items:center;gap:7px;margin-bottom:25px}
+      .startup-logo i{display:block;width:10px;height:43px;border-radius:8px;background:#d2f779;transform:rotate(-15deg);animation:minima-loading-bar 1.6s ease-in-out infinite}
+      .startup-logo i:nth-child(2){height:59px;animation-delay:.16s}
+      .startup-logo i:nth-child(3){height:32px;animation-delay:.32s}
+      .startup-wordmark{font:400 48px/1 'Instrument Serif',Georgia,serif;letter-spacing:-1.7px;color:#f3f4ee}
+      .startup-shell .loading-caption{margin-top:22px;font-size:12px;line-height:1.7;color:#a6a6b0}
+      .startup-shell a.startup-help{margin-top:32px;min-height:44px;padding:10px 16px;background:transparent;color:#a1a1ad;font-size:11px;border-radius:18px;opacity:0;animation:minima-help-in .3s 6s forwards}
+      .startup-shell a.startup-help:focus{opacity:1;outline:2px solid #d2f779;outline-offset:2px}
+      @keyframes minima-loading-bar{0%,100%{opacity:.55;transform:translateY(3px) rotate(-15deg)}50%{opacity:1;transform:translateY(-3px) rotate(-15deg)}}
+      @keyframes minima-help-in{to{opacity:1}}
+      @media(prefers-reduced-motion:reduce){.startup-logo i{animation:none;opacity:1}.startup-shell a.startup-help{animation:none;opacity:1}}
+    </style>
+    <script>
+      (function() {
+        try {
+          var t = localStorage.getItem('minima:theme') || 'midnight';
+          var a = localStorage.getItem('minima:accent') || '#c6e18b';
+          document.documentElement.dataset.theme = t;
+          document.documentElement.style.setProperty('--accent', a);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <div id="startup-shell" class="startup-shell" role="status">
+        <span class="startup-logo" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="startup-wordmark">minima</span>
+        <p id="startup-status" class="loading-caption">Opening your space…</p>
+        <a class="startup-help" href="/repair.html">Having trouble opening?</a>
+      </div>
+    </div>
+    <div id="startup-recovery" class="startup-shell" role="alert" hidden>
+      <span class="startup-wordmark">minima</span>
+      <h1>Let’s reopen your space.</h1>
+      <p>The app couldn’t finish loading. Refresh its app files to try again.</p>
+      <a href="/repair.html">Repair app startup</a>
+    </div>
+    <noscript><p style="color:#fff;background:#000;padding:24px">Enable JavaScript to open Minima.</p></noscript>
+    <script>
+      (function () {
+        var mounted = false;
+        function recover() {
+          var recovery = document.getElementById('startup-recovery');
+          if (recovery) recovery.hidden = false;
+        }
+        window.addEventListener('minima:mounted', function () { mounted = true; });
+        window.addEventListener('error', function (event) {
+          if (event.target && event.target.tagName === 'SCRIPT') recover();
+          else if (!mounted && event.error) recover();
+        }, true);
+        window.addEventListener('vite:preloadError', function (event) { event.preventDefault(); recover(); });
+        window.addEventListener('unhandledrejection', function (event) {
+          var message = String(event.reason && (event.reason.message || event.reason));
+          if (/dynamically imported module|loading chunk|module script/i.test(message)) recover();
+        });
+        window.setTimeout(function () {
+          var status = document.getElementById('startup-status');
+          if (!mounted && status) status.textContent = 'This is taking longer than usual. You can try repairing app startup.';
+        }, 12000);
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
